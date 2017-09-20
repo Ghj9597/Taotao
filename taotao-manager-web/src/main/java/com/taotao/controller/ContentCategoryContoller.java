@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.taotao.content.service.ContentCategoryService;
 
 import cn.taotao.commom.pojo.EasyUITreeNode;
+import cn.taotao.commom.pojo.TaotaoResult;
 
 @Controller
 public class ContentCategoryContoller {
@@ -24,5 +25,11 @@ public class ContentCategoryContoller {
 		List<EasyUITreeNode> list = contentCategoryService.showContentCategory(id);
 		return list;
 		
+	}
+	
+	@RequestMapping("/content/category/create")
+	@ResponseBody
+	public TaotaoResult AddContentCategory(Long parentId,String name){
+		return contentCategoryService.addContentCategory(parentId, name);
 	}
 }

@@ -1,6 +1,7 @@
 package com.taotao.content.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.taotao.pojo.TbContentCategoryExample;
 import com.taotao.pojo.TbContentCategoryExample.Criteria;
 
 import cn.taotao.commom.pojo.EasyUITreeNode;
+import cn.taotao.commom.pojo.TaotaoResult;
 @Service
 public class ContentCategoryServiceImpl implements ContentCategoryService{
 	//注入Mapper接口
@@ -37,5 +39,29 @@ public class ContentCategoryServiceImpl implements ContentCategoryService{
 			nodes.add(node);
 		}
 		return nodes;
+	}
+
+	@Override
+	public TaotaoResult addContentCategory(Long parentid, String name) {
+		//封装category数据
+		TbContentCategory category = new TbContentCategory();
+		category.setName(name);
+		category.setParentId(parentid);
+		category.setIsParent(false);//新建节点肯定不是父节点
+		category.setSortOrder(1);//排序方法默认为1
+		category.setStatus(1);//设置状态为正常
+		category.setCreated(new Date());
+		category.setUpdated(new Date());
+		tbContentCategoryMapper.insert(category);//插入节点
+		//由于我们编写了<SELECT KEY>所以在插入之后ID内容封装入了节点中
+		TbContentCategory category2 = tbContentCategoryMapper.selectByPrimaryKey(parentid);
+		//获取到父节点,判断父节点的IsParent是否为true;
+		Boolean isParent = category2.getIsParent();
+		if(!isParent){
+			category2.setIsParent(true);
+		}
+		//将父节点保存进入数据库
+		tbContentCategoryMapper.updateByPrimaryKey(category2);
+		return TaotaoResult.ok(category);//由于我们配置了SELECT KEY所以里边是有ID的
 	}
 }
