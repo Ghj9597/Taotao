@@ -64,4 +64,51 @@ public class ContentCategoryServiceImpl implements ContentCategoryService{
 		tbContentCategoryMapper.updateByPrimaryKey(category2);
 		return TaotaoResult.ok(category);//由于我们配置了SELECT KEY所以里边是有ID的
 	}
+
+	@Override
+	public TaotaoResult contentDelete(Long ids) {
+		//1.判断是否为父节点查询出来判断
+		TbContentCategory node = tbContentCategoryMapper.selectByPrimaryKey(ids);
+		if(node==null){
+			return TaotaoResult.ok();
+		}
+		if(!node.getIsParent()){
+			//不是父节点直接删除
+			tbContentCategoryMapper.deleteByPrimaryKey(ids);
+			//删除后判断父节点之下是否还有子节点;
+			Long parentId = node.getParentId();//获取其父节点ID
+			TbContentCategoryExample categoryExample = new TbContentCategoryExample();
+			Criteria criteria = categoryExample.createCriteria();
+			criteria.andParentIdEqualTo(parentId);
+			List<TbContentCategory> list = tbContentCategoryMapper.selectByExample(categoryExample);
+			if(list.isEmpty()){
+				//如果为空则代表其父类子节点
+				TbContentCategory parentNode = tbContentCategoryMapper.selectByPrimaryKey(parentId);
+				parentNode.setIsParent(false);//设置为子节点
+				//将修改后的保存进入数据库
+				tbContentCategoryMapper.updateByPrimaryKey(parentNode);
+			}
+			//如果是父节点则不作修改
+			return TaotaoResult.ok();
+		}else{
+			//如果是父节点,则获取所有其所有子节点
+			TbContentCategoryExample categoryExample = new TbContentCategoryExample();
+			Criteria criteria = categoryExample.createCriteria();
+			criteria.andParentIdEqualTo(ids);
+			List<TbContentCategory> list = tbContentCategoryMapper.selectByExample(categoryExample);
+			for (TbContentCategory tbContentCategory : list) {
+				//遍历所有子节点
+				this.contentDelete(tbContentCategory.getId());
+			}
+			this.contentDelete(ids);
+			return TaotaoResult.ok();
+		}
+	}
+
+	@Override
+	public void update(Long id,String name) {
+		TbContentCategory node = tbContentCategoryMapper.selectByPrimaryKey(id);
+		node.setName(name);
+		tbContentCategoryMapper.updateByPrimaryKey(node);
+	}
 }

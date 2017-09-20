@@ -32,4 +32,17 @@ public class ContentCategoryContoller {
 	public TaotaoResult AddContentCategory(Long parentId,String name){
 		return contentCategoryService.addContentCategory(parentId, name);
 	}
+	
+	@RequestMapping("/content/category/delete")
+	@ResponseBody
+	public TaotaoResult contentDelete(Long id){
+		TaotaoResult taotaoResult = contentCategoryService.contentDelete(id);
+		return taotaoResult;
+	}
+	
+	@RequestMapping("/content/category/update")
+	@ResponseBody
+	public void updateCategory(Long id, String name){
+		contentCategoryService.update(id, name);
+	}
 }

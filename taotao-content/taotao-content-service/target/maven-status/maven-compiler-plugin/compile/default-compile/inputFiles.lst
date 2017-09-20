@@ -1,2 +1,5 @@
 C:\Users\Administrator\Desktop\Taotao\.git\taotao-content\taotao-content-service\src\main\java\com\taotao\content\service\impl\ContentServiceImpl.java
+C:\Users\Administrator\Desktop\Taotao\.git\taotao-content\taotao-content-service\src\main\java\com\taotao\content\jedis\JedisClientPool.java
+C:\Users\Administrator\Desktop\Taotao\.git\taotao-content\taotao-content-service\src\main\java\com\taotao\content\jedis\JedisClient.java
+C:\Users\Administrator\Desktop\Taotao\.git\taotao-content\taotao-content-service\src\main\java\com\taotao\content\jedis\JedisClientCluster.java
 C:\Users\Administrator\Desktop\Taotao\.git\taotao-content\taotao-content-service\src\main\java\com\taotao\content\service\impl\ContentCategoryServiceImpl.java
