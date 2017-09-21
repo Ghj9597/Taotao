@@ -40,6 +40,11 @@ public class ContentServiceImpl implements ContentService {
 		content.setUpdated(new Date());
 		// 向表中插入数据;
 		tbContentMapper.insert(content);
+		try {
+			jedisClient.hdel(CONTENT_KEY, content.getCategoryId().toString());
+		} catch (Exception e) {
+			
+		}
 		return TaotaoResult.ok();
 	}
 
