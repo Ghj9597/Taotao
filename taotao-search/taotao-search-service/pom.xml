@@ -20,16 +20,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.properties</include>
-					<include>**/*.xml</include>
-				</includes>
-				<filtering>false</filtering>
-			</resource>
-		</resources>
 	</build>
 	<dependencies>
 		<!-- spring的依赖 -->
@@ -110,5 +100,4 @@
 			<artifactId>solr-solrj</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>
