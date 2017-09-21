@@ -37,8 +37,8 @@ public class SearchItemServiceImpl implements SearchItemService {
 			document.addField("item_desc", searchItem.getItem_des());
 			//保存这个文档记录
 			httpSolrServer.add(document);
-			httpSolrServer.commit();
 		}
+		httpSolrServer.commit();
 		return TaotaoResult.ok();
 	}
 
